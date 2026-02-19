@@ -1,66 +1,114 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=davice-width, initial-scale=1.0">
+        <!-- Sorgt dafür, dass die Seite auf mobilen Geräten korrekt skaliert -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Titel der Webseite (wird im Browser-Tab angezeigt) -->
         <title>Age Calculator</title>
+
+        <!-- Externe CSS-Datei für das Layout einbinden -->
         <link rel="stylesheet" href="style.css">
     </head>
-     <body>
+
+    <body>
+        <!-- Hauptcontainer für das Layout -->
         <div class="container">
             <div class="Calculator">
-                <h1>JavaScript<br><span>Age Calculator</span></h1>
+
+                <!-- Überschrift der Anwendung -->
+                <h1>JavaScript<br>Age Calculator</h1>
+
+                <!-- Eingabebereich für das Geburtsdatum -->
                 <div class="input-box">
+
+                    <!-- Datumsauswahl -->
                     <input type="date" id="date">
-                    <button onclick="calculateAge()">Calculate</button> 
+
+                    <!-- Button ruft die Altersberechnung auf -->
+                    <button onclick="calculateAge()">Calculate</button>
+
                 </div>
+
+                <!-- Hier wird später das Ergebnis angezeigt -->
                 <p id="result"></p>
+
             </div>
         </div>
 
         <script>
+            // Referenz auf das Datumsfeld holen
             let userInput = document.getElementById("date");
+
+            // Maximales Datum = heutiger Tag (Zukunftsdaten verhindern)
             userInput.max = new Date().toISOString().split("T")[0];
+
+            // Referenz auf das Ergebnisfeld
             let result = document.getElementById("result");
 
+
+            // ===== Hauptfunktion zur Altersberechnung =====
             function calculateAge(){
+
+                // Geburtsdatum in ein Date-Objekt umwandeln
                 let birthDate = new Date(userInput.value);
 
+                // Tag, Monat und Jahr aus dem Geburtsdatum extrahieren
                 let d1 = birthDate.getDate();
-                let m1 = birthDate.getMonth() + 1;
+                let m1 = birthDate.getMonth() + 1; // +1, da Monate bei 0 starten
                 let y1 = birthDate.getFullYear();
 
+                // Heutiges Datum abrufen
                 let today = new Date();
 
                 let d2 = today.getDate();
                 let m2 = today.getMonth() + 1;
                 let y2 = today.getFullYear();
 
-                let d3, m3, y3
+                // Variablen für das berechnete Alter
+                let d3, m3, y3;
 
-                y3 = y2 - y1
+                // Grundberechnung der Jahre
+                y3 = y2 - y1;
 
+                // Monatsberechnung
                 if(m2 >= m1){
                     m3 = m2 - m1;
                 }else{
+                    // Wenn aktueller Monat kleiner ist → Jahr reduzieren
                     y3--;
-                    m3 = 12 + m2 -m1;
+                    m3 = 12 + m2 - m1;
                 }
+
+                // Tagesberechnung
                 if(d2 >= d1){
                     d3 = d2 - d1;
                 }else{
+                    // Wenn aktueller Tag kleiner ist → Monat reduzieren
                     m3--;
                     d3 = getDaysInMonth(y1, m1) + d2 - d1;
                 }
+
+                // Korrektur falls Monate negativ werden
                 if(m3 < 0){
-                    m3 = 11
+                    m3 = 11;
                     y3--;
                 }
-                result.innerHTML = `You are <span>${y3}</span> years, <span>${m3}</span> months and <span>${d3}</span> days old`;
+
+                // Ergebnis auf der Webseite anzeigen
+                result.innerHTML =
+                    `You are <span>${y3}</span> years, ` +
+                    `<span>${m3}</span> months and ` +
+                    `<span>${d3}</span> days old`;
             }
 
+
+            // ===== Hilfsfunktion =====
+            // Gibt die Anzahl der Tage eines Monats zurück
             function getDaysInMonth(year, month){
                 return new Date(year, month, 0).getDate();
             }
+
         </script>
     </body>
 </html>
